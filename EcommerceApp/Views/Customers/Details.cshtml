@@ -1,0 +1,59 @@
+﻿@model Customer
+
+@{
+    ViewData["Title"] = "Add new customer";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Details for @Model.fullName</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                    <div class="form-group text-center">
+                        <img class="border-info rounded-circle" style="max-width:150px" id="profilePicturePreview" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="profilePictureFile" class="control-label"></label>
+                        <input type="file" asp-for="profilePictureFile" class="form-control" readonly/>
+                        <span asp-validation-for="profilePictureFile" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="fullName" class="control-label"></label>
+                    <input asp-for="fullName" class="form-control" readonly />
+                        <span asp-validation-for="fullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="phoneNumber" class="control-label"></label>
+                    <input asp-for="phoneNumber" class="form-control" readonly />
+                        <span asp-validation-for="phoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" readonly/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <input asp-for="Gender" class="form-control" readonly />
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                    <div class="form-group">
+                        <a class="btn btn-outline-success float-right" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $("#profilePictureFile").on("change", function () {
+            var input = this;
+            var output = document.getElementById('profilePicturePreview');
+            output.src = window.URL.createObjectURL(input.files[0]);
+        })
+    </script>
+}

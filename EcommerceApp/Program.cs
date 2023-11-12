@@ -1,7 +1,17 @@
+using EcommerceApp.Data;
+using EcommerceApp.Data.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//DbContext configuration
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+
+//Services configuration
+builder.Services.AddScoped<ICustomersService,CustomersService>();
 
 var app = builder.Build();
 
@@ -22,6 +32,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
+//Seed database
+AppDbInitializer.Seed(app);
 app.Run();
