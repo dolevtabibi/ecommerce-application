@@ -1,0 +1,94 @@
+﻿@using System.Globalization
+
+@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "List of Products";
+    CultureInfo shekelCulture = new CultureInfo("he-IL"); // 
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 col-xs-6 border-primary mb-3">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.productName
+                                    <a class="text-white float-right"><i class="bi bi-pencil-square"></i></a>
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="product-image-container">
+                            @if (!string.IsNullOrEmpty(item.productPictureURL))
+                            {
+                                <img class="product-image" src="@item.productPictureURL" alt="@item.productName">
+                            }
+                            else
+                            {
+                                <div class="product-image-placeholder"></div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text ">@item.Price</p>
+                            <p class="card-text ">
+                                <b>Status: </b>
+                                @if (item.IsAvailable == true)
+                                {
+                                    <span class="badge bg-success text-white">AVAILABLE</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger text-white">UNAVAILABLE</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer ">
+                            <p class="card-text">
+                                <a class="btn btn-success text-white">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("C", shekelCulture))
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .product-image {
+        width: 100%; /* Set the width to 100% for responsiveness */
+        height: 100%; /* Set the fixed height as per your requirement */
+        object-fit: cover; /* Maintain aspect ratio and cover the area */
+        background-color: #ccc;
+    }
+
+    .product-image-container {
+        width: 100%;
+        height: 200px; /* Set the fixed height for the container */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; /* Hide overflowing content */
+        border: 1px solid #ccc; /* Optional: Add a border around the container */
+    }
+
+    .product-image-placeholder {
+        background-color: #ccc; /* Default background color for the placeholder */
+        width: 100%;
+        height: 100%; /* Set the height to match the container */
+    }
+
+ </style>
+
