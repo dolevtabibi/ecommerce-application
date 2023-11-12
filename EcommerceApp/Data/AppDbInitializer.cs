@@ -23,7 +23,7 @@ namespace EcommerceApp.Data
                             Gender = "Male",
                             Email ="dolevtabibi@gmail.com",
                             phoneNumber = "0549051997",
-                            profilePictureFile = null,
+                            profilePictureFile = null
                         },
                         new Customer()
                         {
@@ -32,7 +32,6 @@ namespace EcommerceApp.Data
                             Email ="edenhatan7@gmail.com",
                             phoneNumber = "0527766586",
                             profilePictureFile = null
-
                         }
                     });
                     context.SaveChanges();

@@ -7,7 +7,7 @@ namespace EcommerceApp.Data.Services
         Task<IEnumerable<Customer>> GetAllAsync();
         Task<Customer> GetByIdAsync(int id);
         Task AddAsync(Customer customer);
-        Customer Update(int id, Customer newCustomer);
+        Task<Customer> UpdateAsync(int id, Customer newCustomer);
         void Delete(int id);
     }
 }

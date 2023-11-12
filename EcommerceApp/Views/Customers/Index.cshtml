@@ -22,10 +22,17 @@
                     <tr>
                         <td class="align-middle">
                             @{
-                                string? profilePictureUrl = item.profilePictureFile;
+                                string profilePictureUrl;
 
-                                // Check if ProfilePictureURL is null or empty
-                                if (string.IsNullOrEmpty(profilePictureUrl))
+                                if (item.profilePictureFile != null && item.profilePictureFile.Length != 0)
+                                {
+                                    // Convert the byte array to a base64 string
+                                    string base64String = Convert.ToBase64String(item.profilePictureFile);
+
+                                    // Construct the data URL for the image
+                                    profilePictureUrl = $"data:image;base64,{base64String}";
+                                }
+                                else
                                 {
                                     // Determine default image based on gender
                                     if (string.Equals(item.Gender, "Male", StringComparison.OrdinalIgnoreCase))
@@ -43,7 +50,7 @@
                                     }
                                 }
                             }
-                            <img class="rounded-circle" src="@profilePictureUrl" alt="@item.fullName" style="max-width: 150px" />
+                            <img class="rounded-circle" src="@profilePictureUrl" alt="@item.fullName" style="max-width: 150px; max-height: 150px;" />
                         </td>
                         <td class="align-middle">
                             @Html.DisplayFor(modelItem => item.fullName)

@@ -79,14 +79,15 @@ namespace EcommerceApp.Migrations
 
                     b.Property<string>("fullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("phoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("profilePictureFile")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("profilePictureFile")
+                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 

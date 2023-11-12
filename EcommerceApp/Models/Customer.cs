@@ -25,11 +25,12 @@ namespace EcommerceApp.Models
         public string Gender { get; set; }
 
         [Display(Name = "Picture")]
-        public string? profilePictureFile { get; set; }
+        public byte[]? profilePictureFile { get; set; }
+
 
         //Realtionships
-        public List<Appointment> Appointments { get; set; }
-        public List<Product_Customer> Products_Customers { get; set; }  
+        public List<Appointment>? Appointments { get; set; }
+        public List<Product_Customer>? Products_Customers { get; set; }  
 
     }
 }

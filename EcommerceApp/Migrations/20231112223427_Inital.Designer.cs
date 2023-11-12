@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231111121829_Inital")]
+    [Migration("20231112223427_Inital")]
     partial class Inital
     {
         /// <inheritdoc />
@@ -82,14 +82,15 @@ namespace EcommerceApp.Migrations
 
                     b.Property<string>("fullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("phoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("profilePictureFile")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("profilePictureFile")
+                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 

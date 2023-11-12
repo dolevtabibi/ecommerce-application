@@ -1,34 +1,59 @@
 ﻿@model Customer
 
 @{
-    ViewData["Title"] = "Add new customer";
+    ViewData["Title"] = "Update customer";
 }
 
 <div class="row text">
     <div class="col-md-8 offset-2">
         <p>
-            <h1>Add new customer</h1>
+            <h1>Update Customer</h1>
         </p>
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group text-center">
                         <img id="profilePicturePreview" class="border-info rounded-circle" style="max-width:150px" />
                     </div>
+                    <div class="form-group text-center">
+                        <!-- Check if ProfilePictureFile is not null -->
+                        @if (Model.profilePictureFile != null)
+                        {
+                            <!-- Display the image using base64 encoding -->
+                            <img class="border-info rounded-circle" style="max-width:150px" id="profilePicturePreview" src="data:image;base64,@Convert.ToBase64String(Model.profilePictureFile)" />
+                        }
+                        else
+                        {
+                            <!-- Check Gender and display a default image accordingly -->
+                            @if (Model.Gender == "Male")
+                            {
+                                <img class="border-info rounded-circle" style="max-width:150px" id="profilePicturePreview" src="/Images/male.svg" />
+                            }
+                            else if (Model.Gender == "Female")
+                            {
+                                <img class="border-info rounded-circle" style="max-width:150px" id="profilePicturePreview" src="/Images/female.svg" />
+                            }
+                            else
+                            {
+                                <!-- Default image if Gender is not specified or unknown -->
+                                <img class="border-info rounded-circle" style="max-width:150px" id="profilePicturePreview" src="/Images/neithermalenorfemale.svg" />
+                            }
+                        }
+                    </div>
                     <div class="form-group">
                         <label asp-for="profilePictureFile" class="control-label"></label>
-                        <input type="file" asp-for="profilePictureFile" class="form-control" />
+                        <input type="file" asp-for="profilePictureFile" class="form-control"/>
                         <span asp-validation-for="profilePictureFile" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="fullName" class="control-label"></label>
-                        <input asp-for="fullName" class="form-control" />
+                        <input asp-for="fullName" class="form-control"/>
                         <span asp-validation-for="fullName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="phoneNumber" class="control-label"></label>
-                        <input asp-for="phoneNumber" class="form-control" />
+                        <input asp-for="phoneNumber" class="form-control"/>
                         <span asp-validation-for="phoneNumber" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -46,7 +71,7 @@
                         <span asp-validation-for="Gender" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                        <input type="submit" value="Update" class="btn btn-outline-success float-right" />
                         <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
                     </div>
                 </form>
@@ -63,4 +88,4 @@
             output.src = window.URL.createObjectURL(input.files[0]);
         })
     </script>
-}
+}z

@@ -16,6 +16,7 @@ namespace EcommerceApp.Controllers
         }
 
         public async Task<IActionResult> Index()
+        
         {
             var data = await this._service.GetAllAsync();
             return View(data);
@@ -28,18 +29,26 @@ namespace EcommerceApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("fullName, Email, phoneNumber,Gender,profilePictureFile")]Customer customer)
+        public async Task<IActionResult> Create([Bind("fullName, Email, phoneNumber, Gender")] Customer customer, IFormFile profilePictureFile)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(customer);
             }
-            else
+
+            if (profilePictureFile != null && profilePictureFile.Length > 0)
             {
-               await _service.AddAsync(customer);
-               return RedirectToAction(nameof(Index));
+                using (var stream = new MemoryStream())
+                {
+                    await profilePictureFile.CopyToAsync(stream);
+                    customer.profilePictureFile = stream.ToArray();
+                }
             }
+
+            await _service.AddAsync(customer);
+            return RedirectToAction(nameof(Index));
         }
+
 
         //Get: Customers/Details/{id}
         public async Task<IActionResult> Details(int id)
@@ -47,9 +56,43 @@ namespace EcommerceApp.Controllers
             var customerDetails = await _service.GetByIdAsync(id);
             if(customerDetails == null) 
             {
-                return View("Empty");
+                return View("NotFound");
             }
             return View(customerDetails);
+        }
+
+
+
+
+        //Get: Customers/Edit{id}
+        public async Task<IActionResult> Edit(int id)
+        {
+            var customerDetails = await _service.GetByIdAsync(id);
+            if (customerDetails == null)
+            {
+                return View("NotFound");
+            }
+            return View(customerDetails);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id,[Bind("Id, fullName, Email, phoneNumber, Gender")] Customer customer, IFormFile profilePictureFile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(customer);
+            }
+
+            if (profilePictureFile != null && profilePictureFile.Length > 0)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await profilePictureFile.CopyToAsync(stream);
+                    customer.profilePictureFile = stream.ToArray();
+                }
+            }
+            await _service.UpdateAsync(id,customer);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

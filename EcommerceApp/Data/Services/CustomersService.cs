@@ -34,9 +34,11 @@ namespace EcommerceApp.Data.Services
             return result;
         }
 
-        public Customer Update(int id, Customer newCustomer)
+        public async Task<Customer> UpdateAsync(int id, Customer newCustomer)
         {
-            throw new NotImplementedException();
+            _context.Update(newCustomer);
+            await _context.SaveChangesAsync();
+            return newCustomer;
         }
     }
 }
