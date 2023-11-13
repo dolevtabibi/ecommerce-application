@@ -8,6 +8,6 @@ namespace EcommerceApp.Data.Services
         Task<Customer> GetByIdAsync(int id);
         Task AddAsync(Customer customer);
         Task<Customer> UpdateAsync(int id, Customer newCustomer);
-        void Delete(int id);
+        Task DeleteAsync(int id);
     }
 }

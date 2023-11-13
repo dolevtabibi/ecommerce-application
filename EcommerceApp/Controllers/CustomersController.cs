@@ -78,6 +78,9 @@ namespace EcommerceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id,[Bind("Id, fullName, Email, phoneNumber, Gender")] Customer customer, IFormFile profilePictureFile)
         {
+            if (profilePictureFile == null)
+                ModelState.Remove("profilePictureFile");
+
             if (!ModelState.IsValid)
             {
                 return View(customer);
@@ -92,6 +95,29 @@ namespace EcommerceApp.Controllers
                 }
             }
             await _service.UpdateAsync(id,customer);
+            return RedirectToAction(nameof(Index));
+        }
+
+        //Get: Customers/Delete{id}
+        public async Task<IActionResult> Delete(int id)
+        {
+            var customerDetails = await _service.GetByIdAsync(id);
+            if (customerDetails == null)
+            {
+                return View("NotFound");
+            }
+            return View(customerDetails);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var customerDetails = await _service.GetByIdAsync(id);
+            if (customerDetails == null)
+            {
+                return View("NotFound");
+            }
+            await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

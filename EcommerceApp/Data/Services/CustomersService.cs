@@ -18,9 +18,14 @@ namespace EcommerceApp.Data.Services
             await this._context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var result = await _context.Customers.FirstOrDefaultAsync(x => x.Id == id);
+            if (result != null)
+            {
+                _context.Customers.Remove(result);
+                await this._context.SaveChangesAsync();
+            }
         }
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
