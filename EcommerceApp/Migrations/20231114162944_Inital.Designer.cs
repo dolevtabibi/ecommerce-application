@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231112223427_Inital")]
+    [Migration("20231114162944_Inital")]
     partial class Inital
     {
         /// <inheritdoc />
@@ -99,11 +99,11 @@ namespace EcommerceApp.Migrations
 
             modelBuilder.Entity("EcommerceApp.Models.Product", b =>
                 {
-                    b.Property<int>("productId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("productId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
@@ -118,11 +118,11 @@ namespace EcommerceApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("productPictureURL")
+                    b.Property<byte[]>("productPictureFile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
-                    b.HasKey("productId");
+                    b.HasKey("Id");
 
                     b.HasIndex("appointmentId");
 

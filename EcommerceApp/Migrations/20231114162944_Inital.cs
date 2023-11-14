@@ -56,9 +56,9 @@ namespace EcommerceApp.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    productId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    productPictureURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    productPictureFile = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     productName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
@@ -66,7 +66,7 @@ namespace EcommerceApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.productId);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Products_Appointments_appointmentId",
                         column: x => x.appointmentId,
@@ -94,7 +94,7 @@ namespace EcommerceApp.Migrations
                         name: "FK_Products_Customers_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "productId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 

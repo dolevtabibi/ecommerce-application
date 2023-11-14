@@ -35,19 +35,12 @@
                                 else
                                 {
                                     // Determine default image based on gender
-                                    if (string.Equals(item.Gender, "Male", StringComparison.OrdinalIgnoreCase))
+                                    profilePictureUrl = item.Gender switch
                                     {
-                                        profilePictureUrl = "/Images/male.svg"; // URL of default image for male
-                                    }
-                                    else if (string.Equals(item.Gender, "Female", StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        profilePictureUrl = "/Images/female.svg"; // URL of default image for female
-                                    }
-                                    else
-                                    {
-                                        // Use a generic default image if gender is neither male nor female
-                                        profilePictureUrl = "/Images/neithermalenorfemale.svg"; // URL of generic default image
-                                    }
+                                        "Male" => "/Images/male.svg", // URL of default image for male
+                                        "Female" => "/Images/female.svg", // URL of default image for female
+                                        _ => "/Images/neithermalenorfemale.svg" // URL of generic default image
+                                    };
                                 }
                             }
                             <img class="rounded-circle" src="@profilePictureUrl" alt="@item.fullName" style="max-width: 150px; max-height: 150px;" />

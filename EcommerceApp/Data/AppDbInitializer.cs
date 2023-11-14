@@ -45,14 +45,15 @@ namespace EcommerceApp.Data
                         {
                             productName = typeOfService.Pedicure.ToString(),
                             Price = 100,
-                            productPictureURL = "https://th.bing.com/th/id/OIP.gOXu2t-i3FJeSbZ5TohVbQHaFj?pid=ImgDet&rs=1",
+                            productPictureFile = File.ReadAllBytes("C:/Users/dolev/source/repos/EcommerceApp/EcommerceApp/wwwroot/Images/background.jpg"),
                             IsAvailable = false
                         },
                         new Product()
                         {
                             productName = typeOfService.GelX.ToString(),
                             Price = 80,
-                            productPictureURL = "https://th.bing.com/th/id/R.ed14e925514c60555fc58d5f7ed7aa76?rik=xF2iT0VeddBYOQ&pid=ImgRaw&r=0",
+                            productPictureFile = File.ReadAllBytes("C:/Users/dolev/source/repos/EcommerceApp/EcommerceApp/wwwroot/Images/background.jpg"),
+
                             IsAvailable = true
                         },
 
@@ -77,7 +78,7 @@ namespace EcommerceApp.Data
                                 {
                                     Price = 100,
                                     productName = "Test",
-                                    productPictureURL = "TestURL",
+                                    productPictureFile = File.ReadAllBytes("C:/Users/dolev/source/repos/EcommerceApp/EcommerceApp/wwwroot/Images/background.jpg"),
                                     IsAvailable = true
                                 }
                             }

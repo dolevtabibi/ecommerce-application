@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = "List of Products";
-    CultureInfo shekelCulture = new CultureInfo("he-IL"); // 
+    CultureInfo shekelCulture = new CultureInfo("he-IL");
 }
 
 <div class="row">
@@ -15,19 +15,17 @@
                 <div class="row g-0">
                     <div class="col-md-12">
                         <div class="card-header text-white bg-info">
-                            <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.productName
-                                    <a class="text-white float-right"><i class="bi bi-pencil-square"></i></a>
-                                </h5>
-                            </p>
+                            <h5 class="card-title">
+                                @item.productName
+                                <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                            </h5>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="product-image-container">
-                            @if (!string.IsNullOrEmpty(item.productPictureURL))
+                            @if (item.productPictureFile != null)
                             {
-                                <img class="product-image" src="@item.productPictureURL" alt="@item.productName">
+                                <img class="rounded-circle" src="data:image/png;base64,@Convert.ToBase64String(item.productPictureFile)" alt="@item.productName" style="max-width: 150px; max-height: 150px;" />
                             }
                             else
                             {
@@ -37,24 +35,19 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
-                            <p class="card-text ">@item.Price</p>
-                            <p class="card-text ">
+                            <p class="card-text">@item.Price.ToString("C", shekelCulture)</p>
+                            <p class="card-text">
                                 <b>Status: </b>
-                                @if (item.IsAvailable == true)
-                                {
-                                    <span class="badge bg-success text-white">AVAILABLE</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger text-white">UNAVAILABLE</span>
-                                }
+                                <span class="badge @(item.IsAvailable ? "bg-success" : "bg-danger") text-white">
+                                    @(item.IsAvailable ? "AVAILABLE" : "UNAVAILABLE")
+                                </span>
                             </p>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="card-footer ">
+                        <div class="card-footer">
                             <p class="card-text">
-                                <a class="btn btn-success text-white">
+                                <a href="#" class="btn btn-success text-white">
                                     <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("C", shekelCulture))
                                 </a>
                             </p>
@@ -68,27 +61,25 @@
 
 <style>
     .product-image {
-        width: 100%; /* Set the width to 100% for responsiveness */
-        height: 100%; /* Set the fixed height as per your requirement */
-        object-fit: cover; /* Maintain aspect ratio and cover the area */
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         background-color: #ccc;
     }
 
     .product-image-container {
         width: 100%;
-        height: 200px; /* Set the fixed height for the container */
+        height: 200px;
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden; /* Hide overflowing content */
-        border: 1px solid #ccc; /* Optional: Add a border around the container */
+        overflow: hidden;
+        border: 1px solid #ccc;
     }
 
     .product-image-placeholder {
-        background-color: #ccc; /* Default background color for the placeholder */
+        background-color: #ccc;
         width: 100%;
-        height: 100%; /* Set the height to match the container */
+        height: 100%;
     }
-
- </style>
-
+</style>

@@ -13,12 +13,17 @@
             <div class="col-md-8 offset-2">
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="removeImageFlag" name="removeImageFlag" value="false" />
+
                     <div class="form-group text-center">
                         <!-- Check if ProfilePictureFile is not null -->
                         @if (Model.profilePictureFile != null)
                         {
                             <!-- Display the image using base64 encoding -->
-                            <img class="border-info rounded-circle" style="max-width:150px" id="profilePicturePreview" src="data:image;base64,@Convert.ToBase64String(Model.profilePictureFile)" />
+                            <div style="position: relative; display: inline-block;">
+                                <i class="bi bi-x clickable" style="position: absolute; top: 0; right: 0; color: red; cursor: pointer;" onclick="removeImage()"></i>
+                                <img class="border-info rounded-circle" style="max-width: 150px;" id="profilePicturePreview" src="data:image;base64,@Convert.ToBase64String(Model.profilePictureFile)" />
+                            </div>
                         }
                         else
                         {
@@ -38,18 +43,19 @@
                             }
                         }
                     </div>
+
                     <div class="form-group">
                         <label asp-for="profilePictureFile" class="control-label"></label>
-                        <input type="file" asp-for="profilePictureFile" class="form-control"/>
+                        <input type="file" asp-for="profilePictureFile" class="form-control" id="profilePictureFile" />
                     </div>
                     <div class="form-group">
                         <label asp-for="fullName" class="control-label"></label>
-                        <input asp-for="fullName" class="form-control"/>
+                        <input asp-for="fullName" class="form-control" />
                         <span asp-validation-for="fullName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="phoneNumber" class="control-label"></label>
-                        <input asp-for="phoneNumber" class="form-control"/>
+                        <input asp-for="phoneNumber" class="form-control" />
                         <span asp-validation-for="phoneNumber" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -82,6 +88,37 @@
             var input = this;
             var output = document.getElementById('profilePicturePreview');
             output.src = window.URL.createObjectURL(input.files[0]);
-        })
+
+            // Show the "x" icon
+            var xIcon = document.querySelector('.bi-x');
+            if (xIcon) {
+                xIcon.style.display = 'inline'; // Assuming the default display property is inline
+            }
+
+            // Reset the removal flag
+            $("#removeImageFlag").val('false');
+        });
+
+        function removeImage() {
+            // Set the removal flag to true
+            $("#removeImageFlag").val('true');
+
+            // Remove the image by setting its source to an empty string
+            document.getElementById('profilePicturePreview').src = '';
+
+            // Reset the file input field
+            $("#profilePictureFile").val('');
+
+            // Hide the "x" icon
+            var xIcon = document.querySelector('.bi-x');
+            if (xIcon) {
+                xIcon.style.display = 'none';
+            }
+        }
     </script>
+
 }
+
+
+
+

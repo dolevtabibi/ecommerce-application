@@ -11,7 +11,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
 //Services configuration
-builder.Services.AddScoped<ICustomersService,CustomersService>();
+builder.Services.AddScoped<ICustomersService,CustomerssService>();
+builder.Services.AddScoped<IProductsService,ProductsService>();
 
 var app = builder.Build();
 
@@ -35,5 +36,5 @@ app.MapControllerRoute(
     pattern: "{controller=Login}/{action=Index}/{id?}");
 
 //Seed database
-AppDbInitializer.Seed(app);
+/*AppDbInitializer.Seed(app);*/
 app.Run();

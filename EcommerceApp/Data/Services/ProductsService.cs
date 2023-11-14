@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Data.Services
 {
-    public class CustomerssService : EntityBaseRepository<Customer>, ICustomersService
+    public class ProductsService : EntityBaseRepository<Product>, IProductsService
     {
-        public CustomerssService(AppDbContext context) : base(context)
+        public ProductsService(AppDbContext context) : base(context)
         {
 
         }

@@ -3,7 +3,7 @@ using EcommerceApp.Models;
 
 namespace EcommerceApp.Data.Services
 {
-    public interface ICustomersService : IEntityBaseRepository<Customer>
+    public interface IProductsService : IEntityBaseRepository<Product>
     {
 
     }

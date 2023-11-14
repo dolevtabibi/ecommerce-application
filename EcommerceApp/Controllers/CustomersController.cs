@@ -1,8 +1,7 @@
-﻿using EcommerceApp.Data;
-using EcommerceApp.Data.Services;
+﻿using EcommerceApp.Data.Services;
 using EcommerceApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Controllers
 {
@@ -14,9 +13,7 @@ namespace EcommerceApp.Controllers
         {
             this._service = service;
         }
-
         public async Task<IActionResult> Index()
-        
         {
             var data = await this._service.GetAllAsync();
             return View(data);
@@ -31,9 +28,13 @@ namespace EcommerceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("fullName, Email, phoneNumber, Gender")] Customer customer, IFormFile profilePictureFile)
         {
-            if (!ModelState.IsValid)
+            if(profilePictureFile == null)
             {
-                return View(customer);
+                ModelState.Remove("profilePictureFile");
+                if (!ModelState.IsValid)
+                {
+                    return View(customer);
+                }
             }
 
             if (profilePictureFile != null && profilePictureFile.Length > 0)
@@ -61,9 +62,6 @@ namespace EcommerceApp.Controllers
             return View(customerDetails);
         }
 
-
-
-
         //Get: Customers/Edit{id}
         public async Task<IActionResult> Edit(int id)
         {
@@ -76,27 +74,63 @@ namespace EcommerceApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id,[Bind("Id, fullName, Email, phoneNumber, Gender")] Customer customer, IFormFile profilePictureFile)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, fullName, Email, phoneNumber, Gender")] Customer customer, IFormFile profilePictureFile, bool removeImageFlag)
         {
-            if (profilePictureFile == null)
-                ModelState.Remove("profilePictureFile");
+            var customerDetails = await _service.GetByIdAsync(id);
 
-            if (!ModelState.IsValid)
+            if (customerDetails.profilePictureFile != null) //יש תמונה בדטאהבייס
             {
-                return View(customer);
-            }
-
-            if (profilePictureFile != null && profilePictureFile.Length > 0)
-            {
-                using (var stream = new MemoryStream())
+                if (profilePictureFile != null) // והכנסתי חדשה
                 {
-                    await profilePictureFile.CopyToAsync(stream);
-                    customer.profilePictureFile = stream.ToArray();
+                    ModelState.Remove("profilePictureFile");
+                    if (!ModelState.IsValid) // בדיקה שכל שאר הערכים הוכנסו
+                    {
+                        return View(customer);
+                    }
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await profilePictureFile.CopyToAsync(memoryStream);
+                        customer.profilePictureFile = memoryStream.ToArray();
+                    }
+                }
+                else // לא הכנסתי תמונה חדשה
+                {
+                    if (removeImageFlag == false) //לא ביקשתי למחוק את התמונה הדטאבייס
+                    {
+                        // שומר על התמונה הקיימת
+                        ModelState.Remove("profilePictureFile");
+                        if (!ModelState.IsValid)
+                        {
+                            return View(customer);
+                        }
+                        customer.profilePictureFile = customerDetails.profilePictureFile;
+                    }
                 }
             }
-            await _service.UpdateAsync(id,customer);
+            else // אין תמונה בדטאהבייס
+            {
+                if (profilePictureFile != null) // והכנסתי חדשה
+                {
+                    ModelState.Remove("profilePictureFile");
+                    if (!ModelState.IsValid) // בדיקה שכל שאר הערכים הוכנסו
+                    {
+                        return View(customer);
+                    }
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await profilePictureFile.CopyToAsync(memoryStream);
+                        customerDetails.profilePictureFile = memoryStream.ToArray();
+                    }
+                    customer.profilePictureFile = customerDetails.profilePictureFile;
+                }
+            }
+            // Update the customer
+            await _service.UpdateAsync(id, customer);
             return RedirectToAction(nameof(Index));
         }
+
 
         //Get: Customers/Delete{id}
         public async Task<IActionResult> Delete(int id)
@@ -119,6 +153,18 @@ namespace EcommerceApp.Controllers
             }
             await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
+        }
+        private string GetDefaultImageFileNameBasedOnGender(string gender)
+        {
+            switch (gender)
+            {
+                case "Male":
+                    return "male.svg";
+                case "Female":
+                    return "female.svg";
+                default:
+                    return "neithermalenorfemale.svg";
+            }
         }
     }
 }

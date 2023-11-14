@@ -14,11 +14,11 @@
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group text-center">
-                        <img id="profilePicturePreview" class="border-info rounded-circle" style="max-width:150px" />
+                        <img class="border-info rounded-circle" style="max-width: 150px;" id="profilePicturePreview" />
                     </div>
                     <div class="form-group">
                         <label asp-for="profilePictureFile" class="control-label"></label>
-                        <input type="file" asp-for="profilePictureFile" class="form-control" />
+                        <input type="file" asp-for="profilePictureFile" class="form-control" id="profilePictureFile" />
                         <span asp-validation-for="profilePictureFile" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -61,6 +61,6 @@
             var input = this;
             var output = document.getElementById('profilePicturePreview');
             output.src = window.URL.createObjectURL(input.files[0]);
-        })
+        });
     </script>
 }
